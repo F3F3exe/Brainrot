@@ -45,16 +45,24 @@ position:absolute;
 left:20px;
 bottom:40px;
 height:420px;
-opacity:.85;
+opacity:.9;
 filter:drop-shadow(0 0 30px #000);
 pointer-events:none;
 animation:watcherFloat 4s ease-in-out infinite;
+transition:1s;
 }
 
 @keyframes watcherFloat{
 0%{transform:translateY(0)}
 50%{transform:translateY(-10px)}
 100%{transform:translateY(0)}
+}
+
+/* watcher defeat */
+
+.watcher-defeated{
+transform:rotate(90deg) translateY(200px);
+opacity:0;
 }
 
 /* event box */
@@ -94,11 +102,6 @@ button:hover{
 background:#4a3563;
 }
 
-#noBtn{
-height:45px;
-position:relative;
-}
-
 /* reward screen */
 
 .reward-screen{
@@ -117,7 +120,7 @@ font-size:26px;
 margin-bottom:40px;
 }
 
-/* card container */
+/* cards */
 
 .card-container{
 display:flex;
@@ -131,8 +134,6 @@ from{transform:translateY(80px);opacity:0}
 to{transform:translateY(0);opacity:1}
 }
 
-/* card */
-
 .card{
 width:220px;
 height:320px;
@@ -145,16 +146,12 @@ transition:.25s;
 transform:translateY(-20px) scale(1.07);
 }
 
-/* frame */
-
 .card-frame{
 position:absolute;
 inset:0;
 background:url("card.jpg") center/contain no-repeat;
 z-index:1;
 }
-
-/* title */
 
 .card-title{
 position:absolute;
@@ -166,8 +163,6 @@ font-size:18px;
 z-index:2;
 }
 
-/* art area */
-
 .card-art{
 position:absolute;
 top:70px;
@@ -175,11 +170,24 @@ left:38px;
 width:144px;
 height:104px;
 border-radius:6px;
-background:linear-gradient(#3b274c,#120c1a);
+background-size:cover;
+background-position:center;
+border:2px solid rgba(0,0,0,0.6);
+box-shadow:inset 0 0 8px rgba(0,0,0,0.7);
 z-index:2;
 }
 
-/* description */
+.art1{
+background-image:url("art1.png");
+}
+
+.art2{
+background-image:url("art2.png");
+}
+
+.art3{
+background-image:url("art3.png");
+}
 
 .card-desc{
 position:absolute;
@@ -194,15 +202,10 @@ z-index:2;
 
 /* rarity glow */
 
-.uncommon{
-filter:drop-shadow(0 0 10px #7db8ff);
-}
+.uncommon{filter:drop-shadow(0 0 10px #7db8ff);}
+.rare{filter:drop-shadow(0 0 18px gold);}
 
-.rare{
-filter:drop-shadow(0 0 18px gold);
-}
-
-/* relic screen */
+/* relic */
 
 .relic-screen{
 text-align:center;
@@ -219,6 +222,15 @@ margin-bottom:20px;
 @keyframes fadeIn{
 from{opacity:0; transform:scale(.9)}
 to{opacity:1}
+}
+
+/* defeat screen */
+
+.defeat{
+font-family:'Cinzel',serif;
+font-size:70px;
+color:#ff6464;
+text-align:center;
 }
 
 /* sparkles */
@@ -249,18 +261,37 @@ animation:sparkle 2s infinite;
 animation:shake .4s;
 }
 
+.defeat-boss{
+margin-top:30px;
+height:320px;
+opacity:0;
+animation:bossAppear 1.5s ease forwards;
+}
+
+@keyframes bossAppear{
+0%{
+opacity:0;
+transform:scale(0.8);
+}
+100%{
+opacity:1;
+transform:scale(1);
+}
+}
+
 </style>
 </head>
 
 <body>
 
-<img class="watcher" src="Watcher.webp">
+<img class="watcher" id="watcher" src="Watcher.webp">
 
 <div id="game"></div>
 
 <script>
 
 const game=document.getElementById("game")
+const watcher=document.getElementById("watcher")
 
 /* particles */
 
@@ -272,7 +303,7 @@ p.style.animationDuration=15+Math.random()*10+"s"
 document.body.appendChild(p)
 }
 
-/* event screen */
+/* event */
 
 function loadEvent(){
 
@@ -285,19 +316,18 @@ game.innerHTML=`
 <p id="dialogue">...</p>
 
 <button onclick="yesClicked()">Accept the Quest</button>
-<button id="noBtn">Ignore Her</button>
+<button onclick="noClicked()">Lose Fight</button>
 
 </div>
 `
 
 startDialogue()
-setupNoButton()
 
 }
 
 loadEvent()
 
-/* typing dialogue */
+/* typing */
 
 function startDialogue(){
 
@@ -317,30 +347,32 @@ type()
 
 }
 
-/* runaway button */
+/* NO BUTTON → watcher defeat */
 
-function setupNoButton(){
+function noClicked(){
 
-const noBtn=document.getElementById("noBtn")
+document.body.classList.add("shake")
 
-function moveButton(){
-const x=Math.random()*(window.innerWidth-150)
-const y=Math.random()*(window.innerHeight-60)
+watcher.classList.add("watcher-defeated")
 
-noBtn.style.position="absolute"
-noBtn.style.left=x+"px"
-noBtn.style.top=y+"px"
+game.innerHTML = `
+<div class="relic-screen">
+
+<div class="defeat">DEFEAT...</div>
+
+<img src="endboss.png" class="defeat-boss">
+
+<p style="margin-top:20px;font-size:20px">
+The final boss emerges.<br>
+Perhaps refusing the date was a mistake...
+</p>
+
+</div>
+`
+
 }
 
-noBtn.addEventListener("mouseover",moveButton)
-noBtn.addEventListener("touchstart",e=>{
-e.preventDefault()
-moveButton()
-})
-
-}
-
-/* reward screen */
+/* reward */
 
 function yesClicked(){
 
@@ -353,33 +385,30 @@ game.innerHTML=`
 
 <div class="card-container">
 
-<div class="card" onclick="pickDate('Movie Delight')">
+<div class="card" onclick="pickDate('Butter Fingers')">
 <div class="card-frame"></div>
-<div class="card-title">🎬 Movie Delight</div>
-<div class="card-art"></div>
+<div class="card-title">🎬 Butter Fingers</div>
+<div class="card-art art1"></div>
 <div class="card-desc">
-Gain 10 Cozy.<br><br>
-Filthy buttery popcorn and an exciting movie.
+Skip your next combat and enjoy filthy buttery popcorn and an exciting movie instead... don't get too excited tho.
 </div>
 </div>
 
 <div class="card uncommon" onclick="pickDate('Heated Mystery')">
 <div class="card-frame"></div>
 <div class="card-title">🔥 Heated Mystery</div>
-<div class="card-art"></div>
+<div class="card-art art2"></div>
 <div class="card-desc">
-Gain 15 Romance.<br><br>
-At the next Rest Site enter the sauna together.
+At the next Rest Site enter a steamy room toghether. Ensure no one else is watching...
 </div>
 </div>
 
 <div class="card rare" onclick="pickDate('Risk it All')">
 <div class="card-frame"></div>
 <div class="card-title">⚡ Risk it All</div>
-<div class="card-art"></div>
+<div class="card-art art3"></div>
 <div class="card-desc">
-Gain 25 Memories.<br><br>
-Leap into roaring waterfalls and risk everything.
+Leap your sword into roaring waterfalls and risk everything. The winner takes it all.
 </div>
 </div>
 
@@ -390,7 +419,7 @@ Leap into roaring waterfalls and risk everything.
 
 }
 
-/* relic screen */
+/* relic */
 
 function pickDate(choice){
 
@@ -402,14 +431,13 @@ game.innerHTML=`
 
 <div class="relic-screen">
 
-<div class="relic-title">✨ RELIC OBTAINED ✨</div>
+<div class="relic-title">✨ REWARD OBTAINED ✨</div>
 
 <h2>${choice}</h2>
 
 <p>
 Effect:<br>
-Gain +50 Happiness.<br>
-Start each weekend with +1 Date Night.
+Gain +50 Happiness and +1 Happypenis.<br>
 </p>
 
 </div>
