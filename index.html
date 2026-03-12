@@ -2,108 +2,433 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Mysterious Event...</title>
+<title>Mysterious Encounter...</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+
+/* general */
+
 body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: radial-gradient(circle at top, #2d1b3f, #09070f);
-  font-family: Georgia, serif;
-  color:#e6d9b8;
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:radial-gradient(circle at 50% 0%,#3a2752,#09070f 70%);
+font-family:'Crimson Text',serif;
+color:#e6d9b8;
+overflow:hidden;
 }
+
+/* particles */
+
+.particle{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+opacity:.2;
+animation:float 20s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh)}
+100%{transform:translateY(-10vh)}
+}
+
+/* watcher */
+
+.watcher{
+position:absolute;
+left:20px;
+bottom:40px;
+height:420px;
+opacity:.85;
+filter:drop-shadow(0 0 30px #000);
+pointer-events:none;
+animation:watcherFloat 4s ease-in-out infinite;
+}
+
+@keyframes watcherFloat{
+0%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+100%{transform:translateY(0)}
+}
+
+/* event box */
 
 .event-box{
-  background:#1a1424;
-  border:3px solid #8c6b3c;
-  padding:40px;
-  width:420px;
-  text-align:center;
-  box-shadow:0 0 25px black;
+background:#1a1424;
+border:3px solid #8c6b3c;
+padding:40px;
+width:460px;
+text-align:center;
+box-shadow:
+0 0 40px black,
+inset 0 0 40px rgba(0,0,0,.7);
 }
 
-h1{
-  font-size:28px;
-  margin-bottom:20px;
+.event-box h1{
+font-family:'Cinzel',serif;
+letter-spacing:2px;
 }
 
-p{
-  margin-bottom:30px;
-}
+/* buttons */
 
 button{
-  display:block;
-  width:100%;
-  margin:10px 0;
-  padding:12px;
-  font-size:16px;
-  border:2px solid #8c6b3c;
-  background:#2c213b;
-  color:#e6d9b8;
-  cursor:pointer;
-  transition:0.2s;
+display:block;
+width:100%;
+margin:10px 0;
+padding:12px;
+font-size:16px;
+border:2px solid #8c6b3c;
+background:#2c213b;
+color:#e6d9b8;
+cursor:pointer;
+transition:.2s;
 }
 
 button:hover{
-  background:#4a3563;
+background:#4a3563;
 }
 
 #noBtn{
-  position:relative;
+height:45px;
+position:relative;
 }
+
+/* reward screen */
+
+.reward-screen{
+text-align:center;
+width:1000px;
+}
+
+.reward-title{
+font-family:'Cinzel',serif;
+font-size:52px;
+letter-spacing:3px;
+}
+
+.reward-sub{
+font-size:26px;
+margin-bottom:40px;
+}
+
+/* card container */
+
+.card-container{
+display:flex;
+justify-content:center;
+gap:40px;
+animation:cardsIn .7s ease;
+}
+
+@keyframes cardsIn{
+from{transform:translateY(80px);opacity:0}
+to{transform:translateY(0);opacity:1}
+}
+
+/* card */
+
+.card{
+width:220px;
+height:320px;
+position:relative;
+cursor:pointer;
+transition:.25s;
+}
+
+.card:hover{
+transform:translateY(-20px) scale(1.07);
+}
+
+/* frame */
+
+.card-frame{
+position:absolute;
+inset:0;
+background:url("card.jpg") center/contain no-repeat;
+z-index:1;
+}
+
+/* title */
+
+.card-title{
+position:absolute;
+top:22px;
+width:100%;
+text-align:center;
+font-family:'Cinzel',serif;
+font-size:18px;
+z-index:2;
+}
+
+/* art area */
+
+.card-art{
+position:absolute;
+top:70px;
+left:38px;
+width:144px;
+height:104px;
+border-radius:6px;
+background:linear-gradient(#3b274c,#120c1a);
+z-index:2;
+}
+
+/* description */
+
+.card-desc{
+position:absolute;
+bottom:55px;
+left:36px;
+width:148px;
+text-align:center;
+font-size:15px;
+line-height:1.25;
+z-index:2;
+}
+
+/* rarity glow */
+
+.uncommon{
+filter:drop-shadow(0 0 10px #7db8ff);
+}
+
+.rare{
+filter:drop-shadow(0 0 18px gold);
+}
+
+/* relic screen */
+
+.relic-screen{
+text-align:center;
+animation:fadeIn 1s;
+}
+
+.relic-title{
+font-family:'Cinzel',serif;
+font-size:42px;
+color:gold;
+margin-bottom:20px;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:scale(.9)}
+to{opacity:1}
+}
+
+/* sparkles */
+
+.sparkle{
+position:absolute;
+font-size:20px;
+animation:sparkle 2s infinite;
+}
+
+@keyframes sparkle{
+0%{opacity:0; transform:scale(.5)}
+50%{opacity:1; transform:scale(1.2)}
+100%{opacity:0}
+}
+
+/* screen shake */
+
+@keyframes shake{
+0%{transform:translate(0)}
+25%{transform:translate(-6px,4px)}
+50%{transform:translate(6px,-4px)}
+75%{transform:translate(-4px,-3px)}
+100%{transform:translate(0)}
+}
+
+.shake{
+animation:shake .4s;
+}
+
 </style>
 </head>
 
 <body>
 
+<img class="watcher" src="Watcher.webp">
+
+<div id="game"></div>
+
+<script>
+
+const game=document.getElementById("game")
+
+/* particles */
+
+for(let i=0;i<40;i++){
+let p=document.createElement("div")
+p.className="particle"
+p.style.left=Math.random()*100+"vw"
+p.style.animationDuration=15+Math.random()*10+"s"
+document.body.appendChild(p)
+}
+
+/* event screen */
+
+function loadEvent(){
+
+game.innerHTML=`
+
 <div class="event-box">
 
 <h1>❓ Mysterious Encounter</h1>
 
-<p>
-You encounter your girlfriend at the top of the Spire.
-She asks a question...
-</p>
+<p id="dialogue">...</p>
 
-<p><strong>"Will you go on a date with me?"</strong></p>
+<button onclick="yesClicked()">Accept the Quest</button>
+<button id="noBtn">Ignore Her</button>
 
-<button onclick="yesClicked()">Accept the quest</button>
-<button id="noBtn">Ignore her</button>
+</div>
+`
+
+startDialogue()
+setupNoButton()
+
+}
+
+loadEvent()
+
+/* typing dialogue */
+
+function startDialogue(){
+
+const text="At the summit of the Spire you encounter your girlfriend. She tilts her head and smiles... \"Will you go on a date with me?\""
+
+let i=0
+
+function type(){
+if(i<text.length){
+document.getElementById("dialogue").innerHTML+=text[i]
+i++
+setTimeout(type,25)
+}
+}
+
+type()
+
+}
+
+/* runaway button */
+
+function setupNoButton(){
+
+const noBtn=document.getElementById("noBtn")
+
+function moveButton(){
+const x=Math.random()*(window.innerWidth-150)
+const y=Math.random()*(window.innerHeight-60)
+
+noBtn.style.position="absolute"
+noBtn.style.left=x+"px"
+noBtn.style.top=y+"px"
+}
+
+noBtn.addEventListener("mouseover",moveButton)
+noBtn.addEventListener("touchstart",e=>{
+e.preventDefault()
+moveButton()
+})
+
+}
+
+/* reward screen */
+
+function yesClicked(){
+
+game.innerHTML=`
+
+<div class="reward-screen">
+
+<div class="reward-title">VICTORY!</div>
+<div class="reward-sub">Choose Your Reward</div>
+
+<div class="card-container">
+
+<div class="card" onclick="pickDate('Movie Delight')">
+<div class="card-frame"></div>
+<div class="card-title">🎬 Movie Delight</div>
+<div class="card-art"></div>
+<div class="card-desc">
+Gain 10 Cozy.<br><br>
+Filthy buttery popcorn and an exciting movie.
+</div>
+</div>
+
+<div class="card uncommon" onclick="pickDate('Heated Mystery')">
+<div class="card-frame"></div>
+<div class="card-title">🔥 Heated Mystery</div>
+<div class="card-art"></div>
+<div class="card-desc">
+Gain 15 Romance.<br><br>
+At the next Rest Site enter the sauna together.
+</div>
+</div>
+
+<div class="card rare" onclick="pickDate('Risk it All')">
+<div class="card-frame"></div>
+<div class="card-title">⚡ Risk it All</div>
+<div class="card-art"></div>
+<div class="card-desc">
+Gain 25 Memories.<br><br>
+Leap into roaring waterfalls and risk everything.
+</div>
+</div>
 
 </div>
 
-<script>
+</div>
+`
 
-const noBtn = document.getElementById("noBtn")
-
-function moveButton(){
-  const x = Math.random() * (window.innerWidth - 150)
-  const y = Math.random() * (window.innerHeight - 60)
-
-  noBtn.style.position = "absolute"
-  noBtn.style.left = x + "px"
-  noBtn.style.top = y + "px"
 }
 
-noBtn.addEventListener("mouseover", moveButton)
-noBtn.addEventListener("touchstart", function(e){
-  e.preventDefault()
-  moveButton()
-})
+/* relic screen */
 
-function yesClicked(){
-  document.body.innerHTML = `
-  <div style="text-align:center;margin-top:20%;font-family:Georgia;color:#e6d9b8">
-    <h1>✨ Quest Accepted ✨</h1>
-    <p>You gained:</p>
-    <p>❤️ +10 Happiness</p>
-    <p>🍕 Pizza Night</p>
-    <p>🎬 Movie Date</p>
-  </div>
-  `
+function pickDate(choice){
+
+document.body.classList.add("shake")
+
+setTimeout(()=>{
+
+game.innerHTML=`
+
+<div class="relic-screen">
+
+<div class="relic-title">✨ RELIC OBTAINED ✨</div>
+
+<h2>${choice}</h2>
+
+<p>
+Effect:<br>
+Gain +50 Happiness.<br>
+Start each weekend with +1 Date Night.
+</p>
+
+</div>
+`
+
+},350)
+
+/* sparkles */
+
+for(let i=0;i<25;i++){
+let s=document.createElement("div")
+s.className="sparkle"
+s.innerHTML="✨"
+s.style.left=Math.random()*100+"vw"
+s.style.top=Math.random()*100+"vh"
+s.style.animationDelay=Math.random()*2+"s"
+document.body.appendChild(s)
+}
+
 }
 
 </script>
